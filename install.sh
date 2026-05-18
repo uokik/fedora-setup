@@ -53,13 +53,29 @@ show_menu() {
     echo -e "${bold}${magenta}          uokik          ${reset}"
     echo -e "${magenta}=========================${reset}"
     echo
-    echo -e "${green}1)${reset} basic ${yellow}(dev + brave + vscodium)${reset}"
-    echo -e "${green}2)${reset} dev ${yellow}(go, python, node, java, build tools)${reset}"
-    echo -e "${green}3)${reset} brave"
-    echo -e "${green}4)${reset} vscodium"
-    echo -e "${green}5)${reset} desktop ${yellow}(flatpak, discord, vlc, localsend, flatseal)${reset}"
+    echo -e "${green}1)${reset} basic ${yellow}(base + dev + brave + vscodium)${reset}"
+    echo -e "${green}2)${reset} base ${yellow}(git, ssh, curl, wget, btop, fastfetch, nano)${reset}"
+    echo -e "${green}3)${reset} dev ${yellow}(go, python, node, java, build tools)${reset}"
+    echo -e "${green}4)${reset} brave"
+    echo -e "${green}5)${reset} vscodium"
+    echo -e "${green}6)${reset} desktop ${yellow}(flatpak, discord, vlc, localsend, flatseal)${reset}"
     echo -e "${red}0)${reset} exit"
     echo
+}
+
+install_base() {
+    log "installing base tools"
+
+    sudo dnf install -y \
+        git \
+        openssh-clients \
+        curl \
+        wget \
+        btop \
+        fastfetch \
+        nano
+
+    ok "base tools installed"
 }
 
 setup_flatpak() {
@@ -142,6 +158,7 @@ install_basic() {
     log "installing basic setup"
 
     sudo dnf upgrade --refresh -y
+    install_base
     install_dev
     install_brave
     install_vscodium
@@ -162,18 +179,22 @@ main() {
                 pause
                 ;;
             2)
-                install_dev
+                install_base
                 pause
                 ;;
             3)
-                install_brave
+                install_dev
                 pause
                 ;;
             4)
-                install_vscodium
+                install_brave
                 pause
                 ;;
             5)
+                install_vscodium
+                pause
+                ;;
+            6)
                 install_desktop
                 pause
                 ;;
